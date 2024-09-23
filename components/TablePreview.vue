@@ -1,21 +1,23 @@
 <!-- components/TablePreview.vue -->
 <template>
-  <div>
-    <h2 class="text-xl font-semibold mb-2">Table Preview</h2>
-    <div class="table-container" ref="tableContainer">
-      <!-- <table :class="['preview-table', tableStyle]">
-        
-      </table> -->
+    <div class="table-container h-full" ref="tableContainer">
       <FBDefaultLight v-if="useTableStore().tableStyle === 'FB default - light'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
       <FBDefaultDark v-if="useTableStore().tableStyle === 'FB default - dark'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
+      <FBStripedRowsLight v-if="useTableStore().tableStyle === 'FB striped rows - light' " :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
+      <FBStripedRowsDark v-if="useTableStore().tableStyle === 'FB striped rows - dark'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
+      <FBStripedColumnsLight v-if="useTableStore().tableStyle === 'FB striped columns - light'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
+      <FBStripedColumnsDark v-if="useTableStore().tableStyle === 'FB striped columns - dark'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import FBDefaultLight from './tablePresets/FBDefaultLight.vue';
 import FBDefaultDark from './tablePresets/FBDefaultDark.vue';
+import FBStripedRowsLight from './tablePresets/FBStripedRowsLight.vue';
+import FBStripedRowsDark from './tablePresets/FBStripedRowsDark.vue';
+import FBStripedColumnsLight from './tablePresets/FBStripedColumnsLight.vue';
+import FBStripedColumnsDark from './tablePresets/FBStripedColumnsDark.vue';
 
 const tableStore = useTableStore()
 

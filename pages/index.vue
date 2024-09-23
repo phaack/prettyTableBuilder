@@ -1,14 +1,13 @@
 <!-- pages/index.vue -->
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-4">Table Creator</h1>
     <Splitter>
       <SplitterPanel class="min-w-[300px]">
         <TableInput />
         <TableOptions />
       </SplitterPanel>
-      <SplitterPanel>
-        <TablePreview ref="tablePreview" />
+      <SplitterPanel class="h-full">
+        <TablePreview class="h-full" ref="tablePreview" />
       </SplitterPanel>
     </Splitter>
 
