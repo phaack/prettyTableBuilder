@@ -43,6 +43,14 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
+const tableStore = useTableStore()
+
+const onCellEditComplete = (event) => {
+  let { data, newValue, field } = event;
+  data[field] = newValue;
+  emitTableUpdate();
+};
+
 const columns = ref([
   { field: 'col1', header: 'Column 1' },
   { field: 'col2', header: 'Column 2' },
@@ -52,15 +60,19 @@ const rows = ref([
   { col1: 'Data 1', col2: 'Data 2'},
 ]);
 
-const focusedHeader = ref(null);
 
-const emit = defineEmits(['update-table']);
-
-const onCellEditComplete = (event) => {
-  let { data, newValue, field } = event;
-  data[field] = newValue;
+const resetTable = () => {
+  columns.value = [
+    { field: 'col1', header: 'Column 1' },
+    { field: 'col2', header: 'Column 2' },
+  ];
+  rows.value = [
+    { col1: 'Data 1', col2: 'Data 2'},
+  ];
   emitTableUpdate();
 };
+
+const focusedHeader = ref(null);
 
 const addColumn = () => {
   const newField = `col${columns.value.length + 1}`;
@@ -100,8 +112,7 @@ const emitTableUpdate = () => {
   
   const tableData = [headers, ...data];
   
-  emit('update-table', tableData);
-  console.log('Emitted table data:', tableData);
+  tableStore.updateTableData(tableData);
 };
 
 // Watch for changes in columns or rows and emit updates

@@ -9,6 +9,13 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
   ],
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+
+  typescript: {
+    strict: true
+  },
 
   primevue: {
     options: {

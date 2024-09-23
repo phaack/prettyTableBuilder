@@ -3,35 +3,21 @@
   <div>
     <h2 class="text-xl font-semibold mb-2">Table Preview</h2>
     <div class="table-container" ref="tableContainer">
-      <table :class="['preview-table', tableStyle]">
-        <thead>
-          <tr>
-            <th v-for="(cell, index) in tableData[0]" :key="index">{{ cell }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row, rowIndex) in tableData.slice(1)" :key="rowIndex">
-            <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- <table :class="['preview-table', tableStyle]">
+        
+      </table> -->
+      <FBDefaultLight v-if="useTableStore().tableStyle === 'FB default - light'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
+      <FBDefaultDark v-if="useTableStore().tableStyle === 'FB default - dark'" :headers="tableStore.tableData[0]" :rows="tableStore.tableData.slice(1)"/>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import FBDefaultLight from './tablePresets/FBDefaultLight.vue';
+import FBDefaultDark from './tablePresets/FBDefaultDark.vue';
 
-const props = defineProps({
-  tableData: {
-    type: Array,
-    default: () => []
-  },
-  tableStyle: {
-    type: String,
-    default: 'default'
-  }
-})
+const tableStore = useTableStore()
 
 const tableContainer = ref(null)
 

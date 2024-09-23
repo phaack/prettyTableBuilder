@@ -4,11 +4,11 @@
     <h1 class="text-3xl font-bold mb-4">Table Creator</h1>
     <Splitter>
       <SplitterPanel class="min-w-[300px]">
-        <TableInput @update-table="updateTable" />
-        <TableOptions @update-style="updateStyle" />
+        <TableInput />
+        <TableOptions />
       </SplitterPanel>
       <SplitterPanel>
-        <TablePreview ref="tablePreview" :tableData="tableData" :tableStyle="tableStyle" />
+        <TablePreview ref="tablePreview" />
       </SplitterPanel>
     </Splitter>
 
@@ -30,18 +30,7 @@ import TablePreview from '~/components/TablePreview.vue';
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 
-
-const tableData = ref([])
-const tableStyle = ref('default')
 const tablePreview = ref(null)
-
-const updateTable = (newData) => {
-  tableData.value = newData
-}
-
-const updateStyle = (newStyle) => {
-  tableStyle.value = newStyle
-}
 
 const exportImage = async () => {
   if (tablePreview.value) {

@@ -8,7 +8,7 @@
       </TabList>
       <TabPanels>
         <TabPanel value="builder">
-          <TableBuilder @update-table="updateTable" />
+          <TableBuilder />
         </TabPanel>
         <TabPanel value="text">
           <Textarea v-model="textInput" @input="parseTextInput" class="w-full autoResize"
@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue'
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
@@ -31,8 +31,7 @@ import TabPanel from 'primevue/tabpanel';
 import Textarea from 'primevue/textarea';
 import TableBuilder from './TableBuilder.vue';
 
-
-const emit = defineEmits(['update-table'])
+const tableStore = useTableStore()
 
 const inputType = ref('builder')
 const textInput = ref('')
@@ -40,12 +39,15 @@ const textInput = ref('')
 const parseTextInput = () => {
   const rows = textInput.value.trim().split('\n')
   const tableData = rows.map(row => row.split('|').map(cell => cell.trim()))
-  emit('update-table', tableData)
+
+  tableStore?.updateTableData(tableData)
 }
 
 watch(inputType, () => {
   // Reset table data when switching input types
-  emit('update-table', [])
+  if (inputType.value === 'text') {
+    parseTextInput()
+  } 
 })
 
 </script>
