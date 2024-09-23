@@ -2,15 +2,17 @@
 <template>
   <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold mb-4">Table Creator</h1>
-    <div class="flex flex-col md:flex-row gap-4">
-      <div class="w-full md:w-1/2">
+    <Splitter>
+      <SplitterPanel class="min-w-[300px]">
         <TableInput @update-table="updateTable" />
         <TableOptions @update-style="updateStyle" />
-      </div>
-      <div class="w-full md:w-1/2">
+      </SplitterPanel>
+      <SplitterPanel>
         <TablePreview ref="tablePreview" :tableData="tableData" :tableStyle="tableStyle" />
-      </div>
-    </div>
+      </SplitterPanel>
+    </Splitter>
+
+
     <button @click="exportImage" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
       Export as Image
     </button>
@@ -23,6 +25,11 @@ import html2canvas from 'html2canvas'
 import TableInput from '~/components/TableInput.vue';
 import TableOptions from '~/components/TableOptions.vue';
 import TablePreview from '~/components/TablePreview.vue';
+
+
+import Splitter from 'primevue/splitter';
+import SplitterPanel from 'primevue/splitterpanel';
+
 
 const tableData = ref([])
 const tableStyle = ref('default')
@@ -64,7 +71,7 @@ const exportImage = async () => {
         const link = document.createElement('a')
         link.href = url
         link.download = 'table-export.png'
-        
+
         // Trigger download
         document.body.appendChild(link)
         link.click()
