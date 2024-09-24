@@ -5,6 +5,7 @@ export interface TableProps {
     rows: string[][] | undefined
 }
 
+// Extend with more styles by adding them to the TableStyles array
 export const TableStyles = ['FB default - light' , 'FB striped rows - light' , 'FB striped columns - light' 
 , 'FB default - dark' , 'FB striped rows - dark' , 'FB striped columns - dark'] as const;
 

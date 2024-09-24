@@ -12,8 +12,6 @@
       :style="backgroundStyle"
     ></div>
 
-    
-
     <!-- Table Wrapper -->
     <div class="relative z-10" :class="{ 'py-12': showBackground }">
       <div
@@ -56,7 +54,15 @@ const {
   backgroundMargin,
 } = storeToRefs(tableStore);
 
-// Compute the current table component based on selected style
+
+
+
+
+
+
+
+
+// Extend with more styles by adding them to the TableStyles array
 const currentTableComponent = computed(() => {
   switch (tableStyle.value) {
     case "FB default - light":
@@ -75,6 +81,19 @@ const currentTableComponent = computed(() => {
       return FBDefaultLight;
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // watch background image
 watch(backgroundImage, () => {
