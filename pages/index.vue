@@ -1,19 +1,23 @@
 <!-- pages/index.vue -->
 <template>
   <div class="container mx-auto h-screen p-4">
-    <Splitter class="h-full">
-      <SplitterPanel class="mx-4 h-full min-w-[300px] space-y-2">
-        <h1 class="text-4xl font-bold mb-4 mt-4">Table To Image</h1>
-        <TableInput />
-        <Divider />
+    <Splitter class="">
+      <SplitterPanel class="mx-4 h-full min-w-[350px] space-y-2">
+        <h1 class="text-4xl font-bold mb-4 mt-4">Table To Image Generator</h1>
         <TableOptions/>
-        <div class="mt-4">
+        <TableInput />
+        <div class="mt-4 flex flex-col space-y-4">
           <Button
-            @click="exportImageFull"
+            @click="() => exportImageFull(2)"
             fluid
             icon="pi pi-download"
             label="Download Image"
           />
+          <div class="flex gap-2">
+            <Button @click="() => exportImageFull(1)" severity="secondary" fluid icon="pi pi-download" label="Download Image (1x)" />
+            <Button @click="() => exportImageFull(4)" severity="secondary" fluid icon="pi pi-download" label="Download Image (4x)" />
+            <Button @click="() => exportImageFull(8)" severity="secondary" fluid icon="pi pi-download" label="Download Image (8x)" />
+          </div>
         </div>
       </SplitterPanel>
       <SplitterPanel class="h-full">
@@ -23,7 +27,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import html2canvas from "html2canvas";
 import TableInput from "~/components/TableInput.vue";
@@ -36,54 +40,18 @@ import Splitter from "primevue/splitter";
 import SplitterPanel from "primevue/splitterpanel";
 import Button from "primevue/button";
 
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+
 const tablePreview = ref(null);
 
-const exportImage = async () => {
+
+
+
+const exportImageFull = async (upscaleFactor: number) => {
   if (tablePreview.value) {
-    const element = tablePreview.value.tableContainer;
-    if (!element) {
-      console.error("Table container not found");
-      return;
-    }
+    // find table container with id "tableContainer" using document
+    const element = document.getElementById("tableContainer");
 
-    try {
-      const canvas = await html2canvas(element, {
-        scale: 2, // Increase resolution
-        useCORS: true, // Enable loading of images from other domains
-        logging: false, // Disable logging for production
-        backgroundColor: null, // Transparent background
-      });
-
-      // Convert canvas to blob
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Failed to create blob");
-          return;
-        }
-
-        // Create download link
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "table-export.png";
-
-        // Trigger download
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Clean up
-        URL.revokeObjectURL(url);
-      }, "image/png");
-    } catch (error) {
-      console.error("Error generating image:", error);
-    }
-  }
-};
-
-const exportImageFull = async () => {
-  if (tablePreview.value) {
-    const element = tablePreview.value.tableContainer;
     if (!element) {
       console.error("Table container not found");
       return;
@@ -114,27 +82,49 @@ const exportImageFull = async () => {
         backgroundColor: null, // Transparent background
       });
 
-      // Convert canvas to blob
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Failed to create blob");
-          return;
-        }
-
-        // Create download link
-        const url = URL.createObjectURL(blob);
+      // refactor using html-to-image
+      toJpeg(element, {
+        quality: 1,
+        // upscale the elements width and height by 4
+        canvasWidth: canvas.width * upscaleFactor,
+        canvasHeight: canvas.height * upscaleFactor,
+      }).then((dataUrl) => {
         const link = document.createElement("a");
-        link.href = url;
-        link.download = "table-export.png";
-
-        // Trigger download
+        link.href = dataUrl;
+        link.download = "table-export.jpeg";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
         // Clean up
-        URL.revokeObjectURL(url);
-      }, "image/png");
+        URL.revokeObjectURL(dataUrl);
+      })
+
+
+
+      
+
+      // Convert canvas to blob
+      // canvas.toBlob((blob) => {
+      //   if (!blob) {
+      //     console.error("Failed to create blob");
+      //     return;
+      //   }
+
+      //   // Create download link
+      //   const url = URL.createObjectURL(blob);
+      //   const link = document.createElement("a");
+      //   link.href = url;
+      //   link.download = "table-export.png";
+
+      //   // Trigger download
+      //   document.body.appendChild(link);
+      //   link.click();
+      //   document.body.removeChild(link);
+
+      //   // Clean up
+      //   URL.revokeObjectURL(url);
+      // }, "image/png");
     } catch (error) {
       console.error("Error generating image:", error);
     } finally {

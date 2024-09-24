@@ -26,7 +26,7 @@ export const useTableStore = defineStore('table', {
         _blurBackground: 'none' as BackgroundBlurOptions,
         _backgroundImage: '',
         _shadow: 'none' as ShadowOptions,
-        _backgroundMargin: 10
+        _backgroundMargin: 0
     }),
     actions: {
         updateTableData(newData: string[][]) {
@@ -74,6 +74,12 @@ export const useTableStore = defineStore('table', {
         },
         updateShowBackground(value: boolean) {
             this._showBackground = value
+            // reset background options if not showing background
+            if (!value) {
+                this._blurBackground = 'none'
+                this._backgroundImage = ''
+                this._backgroundMargin = 0
+            }
         },
         updateBlurBackground(value: BackgroundBlurOptions) {
             this._blurBackground = value
@@ -81,6 +87,15 @@ export const useTableStore = defineStore('table', {
         updateShadow(value: ShadowOptions) {
             this._shadow = value
         },
+        updateRounded(value: boolean) {
+            this._rounded = value
+        },
+        updateBackgroundImage(value: string) {
+            this._backgroundImage = value
+        },
+        updateBackgroundMargin(value: number) {
+            this._backgroundMargin = value
+        }
     }, getters: {
         tableData: (state) => state._tableData,
         tableStyle: (state) => state._tableStyle,
