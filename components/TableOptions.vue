@@ -1,13 +1,10 @@
 <!-- components/TableOptions.vue -->
 <template>
-  <div class="mt-4">
-    <h2 class="text-xl font-semibold mb-2">Table Options</h2>
-    <div>
-      <label class="block mb-2">Table Style:</label>
-      <Select v-model="selectedStyle" @change="updateStyle" :options="TableStyles"></Select>
-      
-    </div>
-    <!-- Add more options here (e.g., background, shadow) -->
+  <div class=" mt-4">
+    <FloatLabel>
+      <Select fluid inputId="tableStyle" v-model="selectedStyle" @change="updateStyle" :options="TableStyles"></Select>
+      <label for="tableStyle">Table Style</label> 
+    </FloatLabel>
   </div>
 </template>
 
@@ -16,6 +13,7 @@ import { ref } from 'vue'
 import Select from 'primevue/select';
 
 import { TableStyles, useTableStore } from '~/stores/tableStore';
+import FloatLabel from 'primevue/floatlabel';
 
 
 const selectedStyle = ref(null)

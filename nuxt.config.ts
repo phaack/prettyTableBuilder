@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
   ],
-  ssr: false,
+    
   pinia: {
     storesDirs: ['./stores/**'],
   },
