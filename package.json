@@ -24,6 +24,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.4",
-    "@primevue/nuxt-module": "^4.0.7"
+    "@primevue/nuxt-module": "^4.0.7",
+    "gh-pages": "^6.1.1"
   }
 }

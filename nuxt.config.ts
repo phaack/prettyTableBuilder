@@ -4,13 +4,22 @@ import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
+   app: {
+    baseURL: '',//'https://phaack.github.io/',
+   },
   modules: [
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
   ],
+  ssr: false,
   pinia: {
     storesDirs: ['./stores/**'],
+  },
+  nitro: {
+    prerender: {
+      routes: ["/"]
+    }
   },
 
   typescript: {
