@@ -3,41 +3,47 @@
   <div class="container mx-auto h-screen p-4">
     <Splitter class="h-full">
       <SplitterPanel class="mx-4 h-full min-w-[300px] space-y-2">
-        <h1 class="text-4xl font-bold mb-12 mt-4">Table To Image</h1>
-        <TableOptions />
+        <h1 class="text-4xl font-bold mb-4 mt-4">Table To Image</h1>
         <TableInput />
-        <div class="">
-          <Button @click="exportImageFull" fluid icon="pi pi-download" label="Download Image" />
+        <Divider />
+        <TableOptions/>
+        <div class="mt-4">
+          <Button
+            @click="exportImageFull"
+            fluid
+            icon="pi pi-download"
+            label="Download Image"
+          />
         </div>
       </SplitterPanel>
       <SplitterPanel class="h-full">
         <TablePreview class="h-full" ref="tablePreview" />
       </SplitterPanel>
     </Splitter>
-
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import html2canvas from 'html2canvas'
-import TableInput from '~/components/TableInput.vue';
-import TableOptions from '~/components/TableOptions.vue';
-import TablePreview from '~/components/TablePreview.vue';
+import { ref } from "vue";
+import html2canvas from "html2canvas";
+import TableInput from "~/components/TableInput.vue";
+import TableOptions from "~/components/TableOptions.vue";
+import TablePreview from "~/components/TablePreview.vue";
 
+import Divider from "primevue/divider";
 
-import Splitter from 'primevue/splitter';
-import SplitterPanel from 'primevue/splitterpanel';
-import Button from 'primevue/button';
+import Splitter from "primevue/splitter";
+import SplitterPanel from "primevue/splitterpanel";
+import Button from "primevue/button";
 
-const tablePreview = ref(null)
+const tablePreview = ref(null);
 
 const exportImage = async () => {
   if (tablePreview.value) {
-    const element = tablePreview.value.tableContainer
+    const element = tablePreview.value.tableContainer;
     if (!element) {
-      console.error('Table container not found')
-      return
+      console.error("Table container not found");
+      return;
     }
 
     try {
@@ -45,41 +51,41 @@ const exportImage = async () => {
         scale: 2, // Increase resolution
         useCORS: true, // Enable loading of images from other domains
         logging: false, // Disable logging for production
-        backgroundColor: null // Transparent background
-      })
+        backgroundColor: null, // Transparent background
+      });
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
         if (!blob) {
-          console.error('Failed to create blob')
-          return
+          console.error("Failed to create blob");
+          return;
         }
 
         // Create download link
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'table-export.png'
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "table-export.png";
 
         // Trigger download
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
         // Clean up
-        URL.revokeObjectURL(url)
-      }, 'image/png')
+        URL.revokeObjectURL(url);
+      }, "image/png");
     } catch (error) {
-      console.error('Error generating image:', error)
+      console.error("Error generating image:", error);
     }
   }
-}
+};
 
 const exportImageFull = async () => {
   if (tablePreview.value) {
-    const element = tablePreview.value.tableContainer
+    const element = tablePreview.value.tableContainer;
     if (!element) {
-      console.error('Table container not found');
+      console.error("Table container not found");
       return;
     }
 
@@ -89,15 +95,15 @@ const exportImageFull = async () => {
       height: element.style.height,
       position: element.style.position,
       overflow: element.style.overflow,
-      maxHeight: element.style.maxHeight
+      maxHeight: element.style.maxHeight,
     };
 
     // Modify styles to capture full table
-    element.style.width = 'auto';
-    element.style.height = 'auto';
-    element.style.position = 'relative';
-    element.style.overflow = 'visible';
-    element.style.maxHeight = 'none';
+    element.style.width = "auto";
+    element.style.height = "auto";
+    element.style.position = "relative";
+    element.style.overflow = "visible";
+    element.style.maxHeight = "none";
 
     try {
       const canvas = await html2canvas(element, {
@@ -105,21 +111,21 @@ const exportImageFull = async () => {
         scale: 2, // Increase resolution
         useCORS: true,
         logging: false,
-        backgroundColor: null // Transparent background
+        backgroundColor: null, // Transparent background
       });
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
         if (!blob) {
-          console.error('Failed to create blob');
+          console.error("Failed to create blob");
           return;
         }
 
         // Create download link
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
-        link.download = 'table-export.png';
+        link.download = "table-export.png";
 
         // Trigger download
         document.body.appendChild(link);
@@ -128,9 +134,9 @@ const exportImageFull = async () => {
 
         // Clean up
         URL.revokeObjectURL(url);
-      }, 'image/png');
+      }, "image/png");
     } catch (error) {
-      console.error('Error generating image:', error);
+      console.error("Error generating image:", error);
     } finally {
       // Restore original styles
       Object.assign(element.style, originalStyles);

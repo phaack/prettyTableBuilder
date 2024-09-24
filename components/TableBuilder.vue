@@ -1,7 +1,7 @@
 <!-- components/TableBuilder.vue -->
 <template>
-  <DataTable :value="rows" editMode="cell" @cell-edit-complete="onCellEditComplete" v-model:reorderableColumns="columns"
-    :reorderableColumns="true" @column-reorder="onColumnReorder" :pt="{
+  <DataTable :value="rows" editMode="cell" @cell-edit-complete="onCellEditComplete"
+     @column-reorder="onColumnReorder" :pt="{
       // table: { style: 'min-width: 20rem' },
       column: {
         bodycell: ({ state }) => ({
